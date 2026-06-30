@@ -1,4 +1,6 @@
-const Waitlist = require("../models/Waitlist");
+// const Waitlist = require("../models/Waitlist");
+
+const Waitlist = require("../");
 
 exports.joinWaitlist = async (req, res) => {
   try {
