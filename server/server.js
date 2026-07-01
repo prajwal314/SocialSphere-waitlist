@@ -18,8 +18,19 @@ const limiter = rateLimit({
   message: { message: "Too many requests, please try again later." },
 });
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim()) : []),
+];
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST"],
 }));
 app.use(express.json());
